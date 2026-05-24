@@ -11,7 +11,7 @@ export default function CuteDateInvite() {
 
   const [yesScale, setYesScale] = React.useState(1);
 
-  const [time, setTime] = React.useState("");
+  const [dateTime, setDateTime] = React.useState("");
 
   const [selectedPlans, setSelectedPlans] = React.useState([]);
 
@@ -20,44 +20,48 @@ export default function CuteDateInvite() {
   const allPlans = [
     "🛍️ Shopping",
     "🎮 Main arcade",
-    "🍰 Beli dessert",
+    "🍰 Dessert date",
   ];
 
   const moveNoButton = () => {
 
-    const randomX = Math.random() * 350 - 175;
+    const randomX = Math.random() * 140 - 70;
 
-    const randomY = Math.random() * 250 - 125;
+    const randomY = Math.random() * 80 - 40;
 
     setNoPos({
       x: randomX,
       y: randomY,
     });
 
-    setYesScale((prev) => prev + 0.12);
+    setYesScale((prev) => prev + 0.06);
 
   };
 
   return (
 
-    <div className="min-h-screen bg-gradient-to-br from-pink-200 via-rose-100 to-pink-300 flex items-center justify-center p-6 overflow-hidden relative font-sans">
+    <div className="h-screen overflow-hidden bg-gradient-to-br from-pink-200 via-rose-100 to-pink-300 flex items-center justify-center relative font-sans p-0">
+
+      {/* MUSIC */}
+      <audio id="bgm" loop>
+        <source src="/music.mp3" type="audio/mpeg" />
+      </audio>
 
       {/* FLOATING HEARTS */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
 
-        {[...Array(70)].map((_, i) => (
+        {[...Array(18)].map((_, i) => (
 
           <div
             key={i}
             className="absolute"
             style={{
               left: `${Math.random() * 100}%`,
-              bottom: `-${Math.random() * 120}px`,
-              fontSize: `${10 + Math.random() * 22}px`,
-              animation: `floatUp ${5 + Math.random() * 8}s linear infinite`,
-              animationDelay: `${Math.random() * 8}s`,
-              opacity: 0.3 + Math.random() * 0.7,
-              filter: "blur(0.2px)",
+              bottom: `-${Math.random() * 40}px`,
+              fontSize: `${5 + Math.random() * 8}px`,
+              animation: `floatUp ${5 + Math.random() * 3}s linear infinite`,
+              animationDelay: `${Math.random() * 5}s`,
+              opacity: 0.35,
             }}
           >
             💖
@@ -67,14 +71,13 @@ export default function CuteDateInvite() {
 
       </div>
 
-      {/* HEART ANIMATION */}
       <style>
         {`
 
           @keyframes floatUp {
 
             0% {
-              transform: translateY(0vh) translateX(0px) rotate(0deg);
+              transform: translateY(0vh);
               opacity: 0;
             }
 
@@ -82,20 +85,8 @@ export default function CuteDateInvite() {
               opacity: 1;
             }
 
-            25% {
-              transform: translateY(-25vh) translateX(30px) rotate(8deg);
-            }
-
-            50% {
-              transform: translateY(-50vh) translateX(-30px) rotate(-8deg);
-            }
-
-            75% {
-              transform: translateY(-75vh) translateX(20px) rotate(5deg);
-            }
-
             100% {
-              transform: translateY(-130vh) translateX(-20px) rotate(-5deg);
+              transform: translateY(-105vh);
               opacity: 0;
             }
 
@@ -105,56 +96,66 @@ export default function CuteDateInvite() {
       </style>
 
       {/* MAIN CARD */}
-      <div className="bg-white/80 backdrop-blur-md shadow-2xl rounded-[40px] p-10 w-full max-w-5xl min-h-[650px] text-center relative z-10 border border-pink-200">
+      <div className="bg-white/80 backdrop-blur-md shadow-2xl rounded-[22px] p-2 w-full max-w-2xl h-[68vh] text-center relative z-10 border border-pink-200 overflow-hidden">
 
         {/* PAGE 1 */}
         {page === 0 && (
 
-          <div className="space-y-8 flex flex-col items-center justify-center min-h-[550px]">
+          <div className="space-y-1 flex flex-col items-center justify-center h-full">
 
-            <div className="text-7xl">
+            <div className="text-2xl">
               💌
             </div>
 
-            <h1 className="text-6xl font-bold text-rose-500 leading-snug">
+            <h1 className="text-xl md:text-2xl font-bold text-rose-500 leading-tight">
               Wanna go out with me?
             </h1>
 
-            <p className="text-gray-600 text-2xl">
+            <p className="text-gray-600 text-xs">
               i already planned a cute day for us 😋
             </p>
 
-            <div className="relative h-52 flex items-center justify-center gap-8 mt-6">
+            <div className="relative h-14 flex items-center justify-center gap-3">
 
-              {/* YES BUTTON */}
+              {/* YES */}
               <button
-                onClick={() => setPage(1)}
+                onClick={() => {
+
+                  setPage(1);
+
+                  const audio = document.getElementById("bgm");
+
+                  if (audio) {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                  }
+
+                }}
                 style={{
                   transform: `scale(${yesScale})`,
                 }}
-                className="bg-rose-500 hover:bg-rose-600 transition-all text-white px-12 py-5 rounded-3xl text-2xl font-semibold shadow-xl"
+                className="bg-rose-500 hover:bg-rose-600 transition-all text-white px-4 py-1 rounded-3xl text-xs font-semibold shadow-xl z-10"
               >
                 YES 💖
               </button>
 
-              {/* NO BUTTON */}
+              {/* NO */}
               <button
                 onMouseEnter={moveNoButton}
                 onClick={moveNoButton}
                 style={{
                   transform: `translate(${noPos.x}px, ${noPos.y}px)`,
                 }}
-                className="bg-gray-100 hover:bg-gray-200 transition-all px-12 py-5 rounded-3xl text-2xl font-semibold absolute"
+                className="bg-gray-100 hover:bg-gray-200 transition-all px-4 py-1 rounded-3xl text-xs font-semibold absolute"
               >
                 no 🙄
               </button>
 
             </div>
 
-            {/* TEXT AFTER NO BUTTON MOVED */}
             {yesScale > 1 && (
 
-              <p className="text-lg text-gray-500 mt-4">
+              <p className="text-[9px] text-gray-500">
                 kenapa tombolnya rusak ya 🤨
               </p>
 
@@ -167,39 +168,40 @@ export default function CuteDateInvite() {
         {/* PAGE 2 */}
         {page === 1 && (
 
-          <div className="space-y-8 flex flex-col items-center justify-center min-h-[550px]">
+          <div className="space-y-1 flex flex-col items-center justify-center h-full">
 
-            <div className="text-7xl">
-              🎀
+            <div className="text-2xl">
+              📅
             </div>
 
-            <h1 className="text-5xl font-bold text-rose-500">
-              YAYYYYY 💕
+            <h1 className="text-xl font-bold text-rose-500">
+              kapan aku jemput? 💕
             </h1>
 
-            <p className="text-gray-600 text-2xl">
-              aku jemput jam berapa?
+            <p className="text-gray-600 text-xs">
+              pilih tanggal + jam 😋
             </p>
 
-            <div className="grid grid-cols-2 gap-6 mt-6 w-full max-w-xl">
+            <div className="bg-pink-50 p-2 rounded-[16px] shadow-xl border border-pink-100 w-full max-w-xs">
 
-              {["12.00", "13.00", "14.00", "15.00"].map((t) => (
+              <input
+                type="datetime-local"
+                value={dateTime}
+                onChange={(e) => setDateTime(e.target.value)}
+                className="w-full p-2 rounded-xl text-xs border border-pink-200 outline-none"
+              />
 
-                <button
-                  key={t}
-                  onClick={() => {
-
-                    setTime(t);
-
-                    setPage(2);
-
-                  }}
-                  className="bg-pink-100 hover:bg-pink-200 p-6 rounded-3xl text-2xl font-medium transition-all shadow-lg"
-                >
-                  {t}
-                </button>
-
-              ))}
+              <button
+                disabled={!dateTime}
+                onClick={() => setPage(2)}
+                className={`mt-2 w-full p-2 rounded-xl text-xs font-semibold transition-all ${
+                  dateTime
+                    ? "bg-rose-500 hover:bg-rose-600 text-white"
+                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                }`}
+              >
+                continue 💌
+              </button>
 
             </div>
 
@@ -210,33 +212,29 @@ export default function CuteDateInvite() {
         {/* PAGE 3 */}
         {page === 2 && (
 
-          <div className="space-y-8 flex flex-col items-center justify-center min-h-[550px]">
+          <div className="space-y-1 flex flex-col items-center justify-center h-full">
 
-            <div className="text-7xl">
-              🍜
+            <div className="text-2xl">
+              💌
             </div>
 
-            <h1 className="text-5xl font-bold text-rose-500">
-              First date agenda
+            <h1 className="text-xl font-bold text-rose-500">
+              date agenda
             </h1>
 
-            <div className="bg-pink-50 rounded-[30px] p-8 text-left space-y-4 text-xl w-full max-w-2xl shadow-inner">
+            <div className="bg-pink-50 rounded-[16px] p-2 text-left space-y-1 text-xs w-full max-w-md shadow-inner">
+
+              <p>1. makan lucu dulu 🍜</p>
+
+              <p>2. ngobrol lucu 🎀</p>
 
               <p>
-                1. makan lucu dulu 🍜
-              </p>
-
-              <p>
-                2. muter muter sambil ngobrol 🎀
-              </p>
-
-              <p>
-                {selectedPlans.length + 3}. sekarang pilih lagi 😋
+                {selectedPlans.length + 3}. pilih lagi 😋
               </p>
 
             </div>
 
-            <div className="grid grid-cols-1 gap-5 mt-4 w-full max-w-xl">
+            <div className="grid grid-cols-1 gap-1 w-full max-w-xs">
 
               {allPlans
                 .filter((item) => !selectedPlans.includes(item))
@@ -262,7 +260,7 @@ export default function CuteDateInvite() {
                       }
 
                     }}
-                    className="bg-rose-100 hover:bg-rose-200 p-6 rounded-3xl text-2xl font-medium transition-all shadow-lg"
+                    className="bg-rose-100 hover:bg-rose-200 p-2 rounded-xl text-xs font-medium transition-all shadow-lg"
                   >
                     {item}
                   </button>
@@ -278,50 +276,50 @@ export default function CuteDateInvite() {
         {/* PAGE 4 */}
         {page === 3 && (
 
-          <div className="space-y-8 flex flex-col items-center justify-center min-h-[550px]">
+          <div className="space-y-1 flex flex-col items-center justify-center h-full">
 
-            <div className="text-7xl">
+            <div className="text-2xl">
               🌙
             </div>
 
-            <h1 className="text-5xl font-bold text-rose-500">
-              Special night date ✨
+            <h1 className="text-xl font-bold text-rose-500">
+              Special night ✨
             </h1>
 
-            <p className="text-gray-600 text-2xl">
-              malemnya kita mau ngapain 😋
+            <p className="text-gray-600 text-xs">
+              pilih malemnya 😋
             </p>
 
-            <div className="grid grid-cols-1 gap-5 mt-4 w-full max-w-xl">
+            <div className="grid grid-cols-1 gap-1 w-full max-w-xs">
 
               <button
                 onClick={() => {
 
                   setNightPlan(
-                    "APD painting date kayak 10 things i hate about you 🎨"
+                    "APD painting 🎨"
                   );
 
                   setPage(4);
 
                 }}
-                className="bg-pink-100 hover:bg-pink-200 p-6 rounded-3xl text-2xl transition-all shadow-lg"
+                className="bg-pink-100 hover:bg-pink-200 p-2 rounded-xl text-xs transition-all shadow-lg"
               >
-                🎨 APD painting date
+                🎨 APD painting
               </button>
 
               <button
                 onClick={() => {
 
                   setNightPlan(
-                    "nongkrong sambil street food-an dan ngobrol random 🌃"
+                    "street food 🌃"
                   );
 
                   setPage(4);
 
                 }}
-                className="bg-pink-100 hover:bg-pink-200 p-6 rounded-3xl text-2xl transition-all shadow-lg"
+                className="bg-pink-100 hover:bg-pink-200 p-2 rounded-xl text-xs transition-all shadow-lg"
               >
-                🌃 Nongkrong + street food
+                🌃 Street food
               </button>
 
             </div>
@@ -330,66 +328,45 @@ export default function CuteDateInvite() {
 
         )}
 
-        {/* FINAL PAGE */}
+        {/* FINAL */}
         {page === 4 && (
 
-          <div className="space-y-8 flex flex-col items-center justify-center min-h-[550px] py-8">
+          <div className="space-y-1 flex flex-col items-center justify-center h-full">
 
-            <div className="text-8xl">
+            <div className="text-3xl">
               💖
             </div>
 
-            <h1 className="text-6xl font-bold text-rose-500">
+            <h1 className="text-2xl font-bold text-rose-500">
               It’s a date then.
             </h1>
 
-            <div className="bg-pink-50 rounded-[35px] p-8 text-left shadow-inner space-y-5 text-xl w-full max-w-3xl">
+            <div className="bg-pink-50 rounded-[16px] p-2 text-left shadow-inner space-y-1 text-xs w-full max-w-md">
 
               <p>
-                ⏰{" "}
-                <span className="font-semibold">
-                  Jam jemput:
-                </span>{" "}
-                {time}
+                📅 <span className="font-semibold">Date:</span>{" "}
+                {new Date(dateTime).toLocaleString()}
               </p>
 
               <p>
-                🎀{" "}
-                <span className="font-semibold">
-                  Activities:
-                </span>{" "}
+                🎀 <span className="font-semibold">Activities:</span>{" "}
                 {selectedPlans.join(" → ")}
               </p>
 
               <p>
-                🌙{" "}
-                <span className="font-semibold">
-                  Night plan:
-                </span>{" "}
+                🌙 <span className="font-semibold">Night:</span>{" "}
                 {nightPlan}
-              </p>
-
-              <p>
-                💌{" "}
-                <span className="font-semibold">
-                  Dress code:
-                </span>{" "}
-                why dress code? you'd look pretty in anything anyway mwehehehe 😋
               </p>
 
             </div>
 
-            <div className="bg-white rounded-[30px] p-6 border border-pink-200 shadow-md w-full max-w-2xl">
+            <div className="bg-white rounded-[14px] p-2 border border-pink-200 shadow-md w-full max-w-sm">
 
-              <p className="italic text-gray-600 text-2xl">
+              <p className="italic text-gray-600 text-xs">
                 “still choosing you, always.”
               </p>
 
             </div>
-
-            <p className="text-gray-500 text-xl">
-              abis itu baru aku anterin kamu pulang 💕
-            </p>
 
             <button
               onClick={() => {
@@ -403,14 +380,14 @@ export default function CuteDateInvite() {
                   y: 0,
                 });
 
-                setTime("");
+                setDateTime("");
 
                 setSelectedPlans([]);
 
                 setNightPlan("");
 
               }}
-              className="mt-4 bg-rose-500 hover:bg-rose-600 text-white px-10 py-4 rounded-3xl text-2xl font-semibold transition-all shadow-xl"
+              className="bg-rose-500 hover:bg-rose-600 text-white px-4 py-1 rounded-3xl text-xs font-semibold transition-all shadow-xl"
             >
               replay 💞
             </button>
@@ -424,4 +401,5 @@ export default function CuteDateInvite() {
     </div>
 
   );
+
 }
